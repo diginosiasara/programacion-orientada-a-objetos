@@ -1,0 +1,107 @@
+# Bitácora de Errores y Soluciones
+
+## Error 1: Estructura de carpetas incorrecta
+**Fecha:** 15/10/2026 - 12:20
+**Síntoma:** Maven no encontraba el código fuente
+**Causa:** Las carpetas `dao`, `model`, `service`, `web` estaban sueltas en la raíz, 
+no dentro de `src/main/java/com/empresa/proyecto/`
+**Solución:** Reorganizar siguiendo el estándar Maven:
+src/main/java/com/empresa/proyecto/[capas]
+src/main/webapp/[recursos web]
+
+---
+
+## Error 2: Maven no detectado en el PATH
+**Fecha:** 15/10/2026 - 12:45
+**Síntoma:** `"mvn" no se reconoce como un comando interno o externo`
+**Causa:** Maven no estaba instalado en el sistema
+**Solución:** Crear script `instalar_maven_local.bat` que descarga Maven en `tools/`
+
+---
+
+## Error 3: URL de descarga de Maven rota (404)
+**Fecha:** 15/10/2026 - 13:04
+**Síntoma:** `Invoke-WebRequest : Not Found`
+**Causa:** Apache mueve versiones antiguas a archivo
+**Solución:** Implementar múltiples URLs de respaldo en el script:
+- URL principal: `dlcdn.apache.org`
+- URL alternativa: `archive.apache.org`
+
+---
+
+## Error 4: Versión de Maven incorrecta en el script
+**Fecha:** 15/10/2026 - 13:28
+**Síntoma:** Script buscaba `apache-maven-3.9.9` pero se descargó `3.9.6`
+**Causa:** Versión hardcoded en el script
+**Solución:** Usar búsqueda dinámica con `for /d %%D in (tools\apache-maven-*)`
+
+---
+
+## Error 5: Rutas con espacios y caracteres especiales
+**Fecha:** 15/10/2026 - 13:35
+**Síntoma:** `No se esperaba \Common en este momento`
+**Causa:** La ruta del proyecto contenía espacios y tildes:
+`D:\central\cusos2026\Principios de la programación orientada a objetos\...`
+**Solución:** 
+- Usar `cd /d "%~dp0"` para forzar el directorio correcto
+- Envolver todas las rutas en comillas dobles
+- Usar `set "PATH=..."` con comillas
+
+---
+
+## Error 6: El script .bat se abría y cerraba instantáneamente
+**Fecha:** 15/10/2026 - 13:40
+**Síntoma:** La ventana se cerraba sin mostrar errores
+**Causa:** Error de sintaxis en bloques `if`/`for` o archivo guardado como `.bat.txt`
+**Solución:** 
+- Verificar que el archivo no tenga extensión `.txt` oculta
+- Implementar script "Modo Debug" con `pause` después de cada paso
+- Usar `cmd /k` para mantener la ventana abierta
+
+---
+
+## Error 7: Archivo guardado con codificación incorrecta
+**Fecha:** 15/10/2026 - 13:50
+**Síntoma:** Caracteres raros en la consola
+**Causa:** Bloc de notas guardó con codificación UTF-8 con BOM
+**Solución:** Guardar con codificación ANSI o UTF-8 sin BOM
+
+---
+
+## Error 8: Tomcat arrancaba pero mostraba HTTP 404
+**Fecha:** 15/10/2026 - 13:54
+**Síntoma:** `HTTP Status 404 - /proyecto/`
+**Causa:** No existía `index.html` en `src/main/webapp/`
+**Solución:** Crear `index.html` con contenido básico
+
+---
+
+## Error 9: Java 25 con warnings de métodos restringidos
+**Fecha:** 15/10/2026 - 13:54
+**Síntoma:** Warnings sobre `sun.misc.Unsafe` y métodos nativos
+**Causa:** Java 25 es muy nuevo para Tomcat 7 y Maven 3.9.6
+**Solución:** Los warnings son informativos, no bloquean la ejecución. 
+Se pueden ignorar o añadir `--enable-native-access=ALL-UNNAMED`
+
+---
+
+## Error 10: El script no encontraba Maven al hacer doble clic
+**Fecha:** 15/10/2026 - 14:00
+**Síntoma:** `Maven no encontrado en la carpeta 'tools'`
+**Causa:** Al hacer doble clic, Windows ejecuta desde `System32`, no desde la carpeta del script
+**Solución:** Añadir `cd /d "%~dp0"` como primera línea del script
+
+---
+
+## Resumen de Errores por Categoría
+
+| Categoría | Cantidad |
+|-----------|----------|
+| Estructura de carpetas | 1 |
+| PATH y variables de entorno | 3 |
+| Sintaxis de scripts .bat | 3 |
+| URLs y descargas | 1 |
+| Configuración de Tomcat | 1 |
+| Compatibilidad de versiones | 1 |
+| **Total** | **10** |
+

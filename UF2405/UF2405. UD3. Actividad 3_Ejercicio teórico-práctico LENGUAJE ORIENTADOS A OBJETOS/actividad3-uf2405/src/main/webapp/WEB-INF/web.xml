@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>Actividad 3 - UF2405 UD3</display-name>
+    <description>Proyecto con separación de responsabilidades: HTML, CSS y JS</description>
+
+    <welcome-file-list>
+        <welcome-file>Actividad3Servlet</welcome-file>
+    </welcome-file-list>
+
+</web-app>

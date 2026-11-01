@@ -1,0 +1,32 @@
+IdAutor  Nombre                  Nacionalidad
+-------  ----------------------  ------------
+1        Pong Thinr              Tailandes   
+2        Gabriel García Márquez  Colombiano  
+4        James Gosling           Canadiense  
+Nombre                   Edad
+-----------------------  ----
+Ana López                22  
+Carlos Ruiz              25  
+María García             20  
+Pedro Sánchez            28  
+Laura Martínez           23  
+Rafael Pérez Valparaiso  29  
+Nombre    
+----------
+Pong Thinr
+Nombre      
+------------
+María García
+Titulo                           
+---------------------------------
+Visual Studio Net                
+El amor en los tiempos del cólera
+Cien años de soledad             
+SumaEdades
+----------
+147       
+IdLector  CI   Nombre                   Direccion              Carrera      Edad
+--------  ---  -----------------------  ---------------------  -----------  ----
+2         101  Carlos Ruiz              Avda Siempre Viva 123  Sistemas     25  
+4         103  Pedro Sánchez            Calle 80 #12-34        Redes        28  
+6         320  Rafael Pérez Valparaiso  Avda Guajaira 32       Informatica  29  

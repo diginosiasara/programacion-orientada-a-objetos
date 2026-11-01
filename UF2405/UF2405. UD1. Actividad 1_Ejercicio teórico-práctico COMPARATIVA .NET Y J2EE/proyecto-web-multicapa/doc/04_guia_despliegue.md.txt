@@ -1,0 +1,210 @@
+# Guía Rápida de Despliegue
+
+## 1. Requisitos previos
+
+Antes de ejecutar el proyecto, comprueba que dispones de los siguientes elementos:
+
+- **Java JDK 8 o superior**, compatible con las dependencias y plugins del proyecto.
+- **Conexión a Internet**, necesaria para descargar Maven y las dependencias durante la primera ejecución.
+- **Windows 10/11**, sistema operativo para el que están diseñados los scripts `.bat`.
+
+---
+
+## 2. Pasos para ejecutar el proyecto
+
+### Paso 1. Verificar la estructura de carpetas
+
+Comprueba que el proyecto presenta una estructura similar a la siguiente:
+
+```text
+proyecto-web-multicapa/
+├── pom.xml
+├── lanzar_proyecto.bat
+├── instalar_maven_local.bat
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/
+│       │       └── empresa/
+│       │           └── proyecto/
+│       ├── resources/
+│       └── webapp/
+├── doc/
+└── tools/
+```
+
+La carpeta `tools/` puede crearse automáticamente mediante el script de instalación de Maven.
+
+### Paso 2. Instalar Maven localmente
+
+Si el proyecto incluye el script correspondiente:
+
+1. Haz doble clic en `instalar_maven_local.bat`.
+2. Espera a que finalice la descarga y extracción de Maven.
+3. Comprueba que los archivos se encuentran en la carpeta `tools/`.
+
+El tiempo de instalación depende de la conexión a Internet y del equipo.
+
+### Paso 3. Lanzar el proyecto
+
+1. Haz doble clic en `lanzar_proyecto.bat`.
+2. Espera a que Maven resuelva las dependencias y compile el proyecto.
+3. Comprueba que el servidor se inicia sin errores.
+
+### Paso 4. Acceder a la aplicación
+
+Abre el navegador e introduce la siguiente dirección:
+
+http://localhost:8080/proyecto
+
+La ruta debe coincidir con el contexto de despliegue configurado en el proyecto.
+
+### Paso 5. Detener el servidor
+
+Para detener la aplicación:
+
+- Cierra la ventana de consola si el script está diseñado para finalizar el proceso al cerrarla.
+- También puedes pulsar `Ctrl + C` en la consola y confirmar la interrupción si Windows lo solicita.
+
+---
+
+## 3. Ejecución mediante comandos manuales
+
+Si prefieres trabajar desde la terminal, sigue estos pasos.
+
+### Paso 1. Abrir CMD en la carpeta del proyecto
+
+```bat
+cd /d "D:\ruta\a\proyecto-web-multicapa"
+```
+
+Sustituye la ruta de ejemplo por la ubicación real del proyecto.
+
+### Paso 2. Configurar Maven localmente
+
+```bat
+set "PATH=%PATH%;%cd%\tools\apache-maven-3.9.6\bin"
+```
+
+Esta modificación del `PATH` solo afecta a la sesión actual de CMD.
+
+### Paso 3. Verificar la instalación
+
+```bat
+mvn -version
+```
+
+Comprueba que Maven reconoce la instalación y que utiliza una versión de Java compatible.
+
+### Paso 4. Compilar y ejecutar
+
+Si el proyecto utiliza el plugin de Tomcat 7:
+
+```bat
+call mvn clean compile tomcat7:run
+```
+
+Este comando limpia los archivos de compilación anteriores, compila el código e inicia el servidor mediante el plugin configurado.
+
+**Importante:** el comando requiere que el plugin esté declarado o disponible en la configuración de Maven y que sea compatible con la versión de Java utilizada.
+
+---
+
+## 4. Solución rápida de problemas (*Troubleshooting*)
+
+| Problema | Posible solución |
+|---|---|
+| `mvn` no se reconoce | Ejecuta primero `instalar_maven_local.bat` y comprueba el `PATH`. |
+| Maven no aparece en `tools/` | Verifica la descarga, la extracción y la ruta `tools/apache-maven-3.9.6/bin/mvn.cmd`. |
+| Error HTTP 404 | Comprueba la URL, el contexto de despliegue y la existencia de los recursos web. |
+| El puerto 8080 está ocupado | Detén la aplicación que utiliza el puerto o configura otro puerto disponible. |
+| Java no se detecta | Comprueba la instalación del JDK y la configuración de `JAVA_HOME` y `PATH`. |
+| El script se cierra inmediatamente | Ejecuta el archivo desde CMD y añade instrucciones `pause` para identificar el error. |
+| Error de compilación | Revisa los mensajes de Maven, las dependencias y la compatibilidad de Java. |
+| No se conservan los datos de H2 | Comprueba si la base de datos utiliza almacenamiento en memoria y si se ha cerrado la JVM. |
+
+---
+
+## 5. Limpieza del entorno
+
+Para eliminar los archivos locales del proyecto:
+
+1. Detén el servidor si está en ejecución.
+2. Cierra las consolas asociadas al proyecto.
+3. Elimina la carpeta `proyecto-web-multicapa/` si ya no necesitas sus archivos.
+
+**Nota:** eliminar la carpeta del proyecto no garantiza que desaparezcan todas las dependencias descargadas. Maven puede conservarlas en su repositorio local, habitualmente ubicado en `%USERPROFILE%\.m2\repository`.
+
+---
+
+## 6. Notas importantes
+
+- **Primera ejecución:** puede tardar varios minutos mientras se descargan Maven y las dependencias.
+- **Java 25 o superior:** determinados plugins o bibliotecas antiguos pueden generar advertencias o incompatibilidades.
+- **Base de datos H2 en memoria:** los datos desaparecen cuando finaliza la JVM.
+- **Rutas de Windows:** evita, cuando sea posible, rutas con espacios o caracteres especiales. Si son necesarias, utiliza comillas dobles.
+- **Variables de entorno:** los cambios realizados mediante `set` solo se mantienen durante la sesión de consola.
+- **Compatibilidad:** comprueba las versiones de Java, Maven, Tomcat y H2 antes de modificar las dependencias.
+
+---
+
+## 7. Estructura de la documentación
+
+La carpeta `doc/` debe contener los archivos Markdown de documentación del proyecto.
+
+```text
+proyecto-web-multicapa/
+└── doc/
+    ├── README.md
+    ├── 01_memoria_tecnica.md
+    ├── 02_bitacora_errores.md
+    ├── 03_aprendizajes.md
+    └── 04_guia_despliegue.md
+```
+
+### Creación de la carpeta y los archivos
+
+Puedes utilizar el siguiente script de Windows para crear la estructura inicial:
+
+```bat
+@echo off
+setlocal
+
+if not exist "doc" mkdir "doc"
+
+if not exist "doc\README.md" (
+    echo # Documentacion UF2405> "doc\README.md"
+)
+
+if not exist "doc\01_memoria_tecnica.md" (
+    echo # Memoria Tecnica> "doc\01_memoria_tecnica.md"
+)
+
+if not exist "doc\02_bitacora_errores.md" (
+    echo # Bitacora de Errores> "doc\02_bitacora_errores.md"
+)
+
+if not exist "doc\03_aprendizajes.md" (
+    echo # Aprendizajes Obtenidos> "doc\03_aprendizajes.md"
+)
+
+if not exist "doc\04_guia_despliegue.md" (
+    echo # Guia Rapida de Despliegue> "doc\04_guia_despliegue.md"
+)
+
+echo.
+echo Estructura de documentacion creada.
+pause
+```
+
+Este script crea únicamente los archivos que no existen; no sobrescribe su contenido.
+
+**Importante:** después de ejecutar el script, copia el contenido completo de cada documento en su archivo correspondiente.
+
+---
+
+## Conclusión
+
+Esta guía permite preparar el entorno, ejecutar la aplicación web y resolver las incidencias más habituales durante el despliegue.
+
+La automatización mediante scripts y el uso de dependencias locales facilitan la reproducción del entorno de desarrollo y reducen la necesidad de configuraciones manuales.

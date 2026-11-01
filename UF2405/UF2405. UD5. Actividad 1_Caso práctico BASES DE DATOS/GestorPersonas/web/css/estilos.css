@@ -1,0 +1,218 @@
+/* ============================================
+   ESTILOS GENERALES - Gestor de Personas UF2405
+   ============================================ */
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Tipografía base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Encabezados */
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2em;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Enlaces */
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Formularios */
+form {
+    margin: 20px 0;
+    padding: 20px;
+    background: #ecf0f1;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background: #229954;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-secondary {
+    background: #3498db;
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+}
+
+.btn-danger {
+    background: #e74c3c;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Mensajes */
+.mensaje {
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+.mensaje.exito {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.mensaje.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.mensaje.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ecf0f1;
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    table {
+        font-size: 0.9em;
+    }
+}

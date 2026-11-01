@@ -1,0 +1,93 @@
+/* ============================================
+   ESTILOS ESPECÍFICOS - resultado.jsp
+   ============================================ */
+
+/* Cabecera del resultado */
+.resultado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.resultado-header h1 {
+    margin: 0;
+    border: none;
+    flex: 1;
+}
+
+.badge-total {
+    background: #3498db;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* Tabla de resultados */
+.tabla-resultados {
+    margin: 20px 0;
+}
+
+.tabla-resultados th:first-child {
+    width: 60px;
+    text-align: center;
+}
+
+.tabla-resultados td:first-child {
+    text-align: center;
+    font-weight: 600;
+    color: #3498db;
+}
+
+/* Mensaje cuando no hay resultados */
+.sin-resultados {
+    text-align: center;
+    padding: 40px 20px;
+    background: #fff3cd;
+    border-radius: 8px;
+    color: #856404;
+}
+
+.sin-resultados .icono {
+    font-size: 3em;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Botones de acción */
+.acciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #ecf0f1;
+}
+
+/* Detalles del resultado */
+.detalles {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #28a745;
+}
+
+.detalles strong {
+    color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+    .tabla-resultados {
+        font-size: 0.85em;
+    }
+    
+    .resultado-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

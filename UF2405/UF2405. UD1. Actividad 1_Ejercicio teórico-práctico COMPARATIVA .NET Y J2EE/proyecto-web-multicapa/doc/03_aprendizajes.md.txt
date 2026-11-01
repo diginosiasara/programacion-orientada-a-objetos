@@ -1,0 +1,265 @@
+# Aprendizajes Obtenidos
+
+## 1. Estándares de proyectos Maven
+
+### Aprendizaje
+
+Maven requiere una estructura de carpetas específica. No basta con colocar el código Java en cualquier ubicación: es necesario seguir el estándar del proyecto.
+
+```text
+src/main/java/[paquete]/[clases]
+src/main/resources/[archivos de configuración]
+src/main/webapp/[recursos web]
+```
+
+### Por qué es importante
+
+- Maven busca automáticamente los archivos en estas rutas.
+- Facilita la colaboración entre desarrolladores.
+- Permite utilizar herramientas de integración y despliegue continuo (CI/CD) sin configuraciones adicionales innecesarias.
+
+---
+
+## 2. Gestión de rutas en scripts de Windows
+
+### Aprendizaje
+
+Las rutas que contienen espacios o caracteres especiales, como tildes y eñes, pueden causar problemas en los scripts `.bat`.
+
+Buenas prácticas:
+
+- Encerrar las rutas entre comillas dobles.
+- Utilizar `cd /d` para cambiar de unidad y directorio.
+- Utilizar `set "VARIABLE=valor"` para definir variables de entorno de forma segura.
+
+### Ejemplo: correcto e incorrecto
+
+```bat
+REM INCORRECTO
+cd D:\Mi Proyecto\carpeta
+
+REM CORRECTO
+cd /d "D:\Mi Proyecto\carpeta"
+
+REM INCORRECTO
+set PATH=%PATH%;C:\Program Files\Java
+
+REM CORRECTO
+set "PATH=%PATH%;C:\Program Files\Java"
+```
+
+---
+
+## 3. Aislamiento de dependencias
+
+### Aprendizaje
+
+Es posible ejecutar un proyecto Java utilizando dependencias locales, sin instalar todos los componentes como servicios del sistema operativo.
+
+- **Maven local:** se descarga en la carpeta `tools/` y se añade temporalmente al `PATH`.
+- **Tomcat:** puede ejecutarse mediante un plugin de Maven, sin instalarlo como servicio independiente.
+- **H2 Database:** permite utilizar una base de datos en memoria sin instalación adicional.
+
+### Ventajas
+
+- Se minimizan los cambios en la configuración del sistema.
+- No es necesario añadir variables de entorno permanentes.
+- El proyecto resulta más portable entre equipos.
+- La limpieza del entorno es sencilla si las dependencias están contenidas en la carpeta del proyecto.
+
+**Nota:** Maven y las dependencias descargadas pueden permanecer en la caché local de Maven del usuario, aunque se elimine la carpeta del proyecto.
+
+---
+
+## 4. Depuración de scripts Batch
+
+### Aprendizaje
+
+Cuando un script `.bat` se cierra inesperadamente, es importante identificar el comando que provoca el error.
+
+Técnicas de depuración:
+
+- Ejecutar el script desde CMD para visualizar los mensajes de error.
+- Añadir `pause` después de cada paso crítico.
+- Utilizar `@echo on` para mostrar los comandos ejecutados.
+- Comprobar que el archivo tenga la extensión `.bat` y no `.bat.txt`.
+
+### Técnica del modo debug
+
+```bat
+@echo off
+
+echo PASO 1: Comprobando el entorno
+pause
+
+echo PASO 2: Configurando las dependencias
+pause
+
+echo PASO 3: Iniciando la aplicacion
+pause
+```
+
+Esta técnica permite identificar en qué fase falla el script.
+
+---
+
+## 5. Compatibilidad de versiones
+
+### Aprendizaje
+
+Las versiones recientes de Java pueden presentar incompatibilidades con bibliotecas antiguas, como determinadas versiones de Tomcat.
+
+Los avisos sobre métodos obsoletos (*deprecated*) no siempre impiden la ejecución, pero deben revisarse junto con los errores reales.
+
+### Orientación general
+
+| Versión de Java | Consideraciones |
+|---|---|
+| Java 8–11 | Puede facilitar la compatibilidad con bibliotecas antiguas. |
+| Java 17–21 | Ofrece un equilibrio entre modernidad y compatibilidad, según las dependencias. |
+| Java 25 o superior | Puede requerir actualizar bibliotecas y plugins antiguos. |
+
+La compatibilidad definitiva depende de las versiones concretas de Java, Maven, Tomcat y las dependencias del proyecto.
+
+---
+
+## 6. Arquitectura multicapa en la práctica
+
+### Aprendizaje
+
+Separar el código en capas —Model, DAO, Service y Web— permite distribuir las responsabilidades de la aplicación.
+
+| Capa | Responsabilidad |
+|---|---|
+| **Model** | Representa los datos mediante clases Java o JavaBeans. |
+| **DAO** | Gestiona el acceso a los datos mediante SQL y JDBC. |
+| **Service** | Contiene la lógica de negocio, las validaciones y las reglas de la aplicación. |
+| **Web** | Gestiona las peticiones HTTP mediante Servlets y coordina la respuesta. |
+
+### Beneficios observados
+
+- Código más organizado y mantenible.
+- Posibilidad de probar cada capa de manera independiente.
+- Si cambia la base de datos, las modificaciones se concentran principalmente en el DAO.
+- Si cambia la interfaz web, se reduce el impacto sobre la lógica de negocio.
+
+---
+
+## 7. Automatización con scripts
+
+### Aprendizaje
+
+Los scripts `.bat` permiten automatizar tareas necesarias para preparar, ejecutar y detener una aplicación.
+
+Entre sus funciones se encuentran:
+
+- Detectar software instalado.
+- Descargar dependencias.
+- Configurar temporalmente el entorno.
+- Compilar el proyecto.
+- Iniciar y detener servidores.
+
+### Buenas prácticas
+
+- Utilizar `@echo off` para evitar mostrar comandos innecesarios.
+- Emplear mensajes claros para identificar cada fase.
+- Utilizar colores, por ejemplo `color 0B`, para mejorar la legibilidad.
+- Comprobar el resultado de los comandos mediante `if errorlevel 1`.
+- Mostrar información útil cuando se produce un error.
+
+### Ejemplo de comprobación
+
+```bat
+call mvn clean compile
+
+if errorlevel 1 (
+    echo ERROR: No se pudo compilar el proyecto.
+    pause
+    exit /b 1
+)
+
+echo Compilacion completada correctamente.
+```
+
+---
+
+## 8. Base de datos H2 para desarrollo
+
+### Aprendizaje
+
+H2 es una base de datos Java adecuada para desarrollo y pruebas.
+
+Características:
+
+- No requiere una instalación independiente.
+- Puede funcionar en memoria.
+- Es compatible con JDBC.
+- Permite inicializar el esquema mediante parámetros de conexión o scripts SQL, según la configuración.
+
+### Ejemplo de conexión
+
+```text
+jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+```
+
+El parámetro `DB_CLOSE_DELAY=-1` permite mantener la base de datos en memoria mientras siga activa la JVM, incluso si se cierran las conexiones. Los datos se pierden cuando finaliza el proceso de la JVM.
+
+### Inicialización del esquema
+
+Es preferible crear las tablas mediante un script SQL de inicialización o una configuración compatible con la versión de H2 utilizada.
+
+---
+
+## 9. Patrón de diseño MVC
+
+### Aprendizaje
+
+El patrón Modelo-Vista-Controlador (MVC) separa los datos, la presentación y el control del flujo de la aplicación.
+
+| Componente | Ejemplo | Función |
+|---|---|---|
+| Modelo | `Usuario.java` | Representa los datos. |
+| Vista | HTML o JSP | Presenta la información al usuario. |
+| Controlador | `UsuarioServlet.java` | Recibe las peticiones HTTP y coordina su procesamiento. |
+
+### Flujo de funcionamiento
+
+1. El usuario hace clic en un enlace o envía un formulario.
+2. El navegador genera una petición HTTP.
+3. El Servlet recibe la petición y actúa como controlador.
+4. El Servlet llama a la capa Service.
+5. Service aplica las reglas de negocio y solicita los datos al DAO.
+6. El DAO consulta la base de datos H2.
+7. Los resultados regresan a las capas superiores.
+8. El Servlet prepara la respuesta utilizando HTML, JSP u otro mecanismo de presentación.
+9. El navegador muestra el resultado al usuario.
+
+Este flujo facilita la separación de responsabilidades y el mantenimiento del código.
+
+---
+
+## 10. Importancia de la documentación técnica
+
+### Aprendizaje
+
+Documentar los errores encontrados y sus soluciones permite conservar el conocimiento generado durante el desarrollo.
+
+### Beneficios
+
+- Facilita la reproducción de soluciones que ya han funcionado.
+- Evita repetir errores.
+- Simplifica la incorporación de nuevos desarrolladores.
+- Sirve como referencia para futuros proyectos.
+- Permite comprender las decisiones técnicas tomadas.
+
+### Resultado de la documentación
+
+Este documento recoge los principales aprendizajes obtenidos durante el desarrollo del proyecto, junto con las buenas prácticas aplicadas para gestionar dependencias, automatizar tareas, estructurar el código y resolver incidencias.
+
+---
+
+## Conclusión
+
+El desarrollo del proyecto ha permitido aplicar conocimientos de Java, Maven, JDBC, H2, Servlets, arquitectura multicapa, MVC y automatización mediante scripts de Windows.
+
+La experiencia demuestra la importancia de combinar una estructura de código organizada con una configuración reproducible, una depuración sistemática y una documentación técnica clara.

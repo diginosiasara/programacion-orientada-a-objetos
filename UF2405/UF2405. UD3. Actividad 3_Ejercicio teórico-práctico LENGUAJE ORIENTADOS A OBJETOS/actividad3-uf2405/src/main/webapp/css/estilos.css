@@ -1,0 +1,122 @@
+/* ============================================
+   ESTILOS GENERALES - Actividad 3 UF2405
+   Responsabilidad: PRESENTACIÓN VISUAL
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFFF00; /* Fondo amarillo como en la imagen original */
+    font-family: 'Times New Roman', Times, serif;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* ============================================
+   IMAGEN
+   ============================================ */
+
+.contenedor-imagen {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.contenedor-imagen img {
+    width: 300px;
+    height: auto;
+    border: 1px solid #333;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* ============================================
+   LÍNEAS HORIZONTALES
+   ============================================ */
+
+hr {
+    border: none;
+    border-top: 2px solid #4a90e2;
+    margin: 20px 0;
+}
+
+/* ============================================
+   ENLACES
+   ============================================ */
+
+a {
+    color: blue;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: darkblue;
+    text-decoration: none;
+}
+
+/* ============================================
+   ENCABEZADOS
+   ============================================ */
+
+h1 {
+    font-size: 2.5em;
+    margin: 20px 0 10px 0;
+    color: #000;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin: 15px 0 10px 0;
+    color: #000;
+}
+
+/* ============================================
+   PÁRRAFOS
+   ============================================ */
+
+p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.texto-estilo {
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* ============================================
+   BOTÓN (Actividad 2 - JavaScript)
+   ============================================ */
+
+.boton-mensaje {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 20px 0;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.boton-mensaje:hover {
+    background-color: #357abd;
+}
+
+.boton-mensaje:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
+
+.contenedor {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}

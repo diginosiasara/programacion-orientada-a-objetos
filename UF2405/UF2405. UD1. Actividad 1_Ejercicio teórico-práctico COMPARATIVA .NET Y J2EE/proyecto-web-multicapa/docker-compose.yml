@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: db_uf2405
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: gestion
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Carga tu script SQL al iniciar
+
+  # 2. Tu Aplicación Java (Tomcat)
+  app:
+    build: .
+    container_name: app_uf2405
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db # Espera a que MySQL esté listo
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: password

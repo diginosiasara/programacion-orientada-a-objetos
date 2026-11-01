@@ -1,0 +1,173 @@
+/* =====================================================================
+   UF2405 · UD6 · Actividad 1
+   APLICACIÓN CON ACCESO A UNA BASE DE DATOS RELACIONAL DESDE UNA CLASE
+   Script de ejecución (MySQL 8.0) - Base de datos: demo_db
+   ---------------------------------------------------------------------
+   Ejecutar de arriba abajo, punto por punto.
+   Conexión (docker-compose del proyecto): localhost:3306, usuario root,
+   contraseña root.  Ejemplo:
+       docker exec -it <contenedor_db> mysql -uroot -proot demo_db
+   ===================================================================== */
+
+USE demo_db;
+
+-- Limpieza previa (la aplicación Java ya crea 'contactos' al arrancar)
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS contactos;
+DROP TABLE IF EXISTS actividades;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+/* ---------------------------------------------------------------------
+   1. Sentencia de creación de la tabla CONTACTOS
+      (Id autonumérico y clave primaria; Nombre requerido)
+   --------------------------------------------------------------------- */
+CREATE TABLE contactos (
+    id        INT          NOT NULL AUTO_INCREMENT,
+    nombre    VARCHAR(50)  NOT NULL,
+    apellidos VARCHAR(100),
+    edad      INT,
+    PRIMARY KEY (id)
+);
+
+DESCRIBE contactos;
+
+
+/* ---------------------------------------------------------------------
+   2. Rellenar la tabla con los datos indicados
+   --------------------------------------------------------------------- */
+INSERT INTO contactos (nombre, apellidos, edad) VALUES ('Alejandro', 'Pérez López',    35);
+INSERT INTO contactos (nombre, apellidos, edad) VALUES ('Raimundo',  'Guzmán Álvarez', 30);
+
+SELECT * FROM contactos;
+
+
+/* ---------------------------------------------------------------------
+   3. Agregar una nueva columna Direccion de tipo texto
+   --------------------------------------------------------------------- */
+ALTER TABLE contactos ADD COLUMN direccion VARCHAR(150);
+
+DESCRIBE contactos;
+
+
+/* ---------------------------------------------------------------------
+   4. Tabla ACTIVIDADES (Id autonumérico y PK; Actividad texto requerido)
+      Consulta de creación y de rellenado de datos
+   --------------------------------------------------------------------- */
+CREATE TABLE actividades (
+    id        INT          NOT NULL AUTO_INCREMENT,
+    actividad VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO actividades (actividad) VALUES ('Informático');
+INSERT INTO actividades (actividad) VALUES ('Consultor');
+
+SELECT * FROM actividades;
+
+
+/* ---------------------------------------------------------------------
+   5. Agregar el campo Actividad (numérico) en la tabla CONTACTOS
+      (mismo tipo que actividades.id para poder relacionarlos)
+   --------------------------------------------------------------------- */
+ALTER TABLE contactos ADD COLUMN actividad INT;
+
+DESCRIBE contactos;
+
+
+/* ---------------------------------------------------------------------
+   6. Relación entre CONTACTOS.Actividad y ACTIVIDADES.Id
+      (clave foránea)
+   --------------------------------------------------------------------- */
+ALTER TABLE contactos
+    ADD CONSTRAINT fk_contactos_actividad
+    FOREIGN KEY (actividad) REFERENCES actividades (id);
+
+-- Asignamos actividades a los contactos de ejemplo
+UPDATE contactos SET actividad = 1 WHERE id = 1;   -- Alejandro -> Informático
+UPDATE contactos SET actividad = 2 WHERE id = 2;   -- Raimundo  -> Consultor
+
+SELECT c.id, c.nombre, c.apellidos, c.edad, a.actividad
+FROM contactos c
+LEFT JOIN actividades a ON a.id = c.actividad;
+
+
+/* ---------------------------------------------------------------------
+   7. Que no se repitan los valores de Actividad: índice UNIQUE.
+      Dos formas posibles (se ejecuta la A, se comprueba, se elimina
+      en el punto 8 y se puede repetir con la B).
+   --------------------------------------------------------------------- */
+
+-- Forma A: CREATE UNIQUE INDEX
+CREATE UNIQUE INDEX ux_contactos_actividad ON contactos (actividad);
+
+-- Forma B (alternativa equivalente): ALTER TABLE ... ADD UNIQUE INDEX
+-- ALTER TABLE contactos ADD UNIQUE INDEX ux_contactos_actividad (actividad);
+
+SHOW INDEX FROM contactos;
+
+-- Prueba: debe fallar con "Duplicate entry '1'" (error 1062)
+-- INSERT INTO contactos (nombre, apellidos, edad, actividad)
+-- VALUES ('Prueba', 'Duplicada', 20, 1);
+
+
+/* ---------------------------------------------------------------------
+   8. Eliminar el índice creado en el punto anterior
+      OJO: en MySQL la clave foránea necesita un índice sobre la columna.
+      Si se hace solo DROP INDEX falla (error 1553). Por eso se
+      sustituye el índice único por uno normal en la misma sentencia.
+   --------------------------------------------------------------------- */
+ALTER TABLE contactos
+    DROP INDEX ux_contactos_actividad,
+    ADD INDEX idx_contactos_actividad (actividad);
+
+SHOW INDEX FROM contactos;
+
+
+/* ---------------------------------------------------------------------
+   9. Eliminar la tabla ACTIVIDADES
+      Primero hay que quitar la clave foránea que depende de ella.
+   --------------------------------------------------------------------- */
+ALTER TABLE contactos DROP FOREIGN KEY fk_contactos_actividad;
+DROP TABLE actividades;
+
+
+/* ---------------------------------------------------------------------
+   10. Eliminar la tabla CONTACTOS
+   --------------------------------------------------------------------- */
+DROP TABLE contactos;
+
+SHOW TABLES;
+
+
+/* =====================================================================
+   11. (Apoyo al ejercicio Java) Consulta equivalente a la modificación
+       pedida: mostrar solo los contactos con edad SUPERIOR a un valor
+       que se pasa como argumento.
+
+       En Java se usaría PreparedStatement:
+           "SELECT * FROM contactos WHERE edad > ?"
+           pstmt.setInt(1, edadMinima);
+
+       Para probarla, recreamos la tabla con los datos iniciales
+       (la aplicación también lo hace sola al arrancar).
+   ===================================================================== */
+CREATE TABLE IF NOT EXISTS contactos (
+    id        INT          NOT NULL AUTO_INCREMENT,
+    nombre    VARCHAR(50)  NOT NULL,
+    apellidos VARCHAR(100),
+    edad      INT,
+    PRIMARY KEY (id)
+);
+INSERT INTO contactos (nombre, apellidos, edad) VALUES
+    ('Alejandro', 'Pérez López',    35),
+    ('Raimundo',  'Guzmán Álvarez', 30);
+
+SET @edadMinima = 32;
+SELECT * FROM contactos WHERE edad > @edadMinima;   -- devuelve solo Alejandro (35)
+
+SET @edadMinima = 30;
+SELECT * FROM contactos WHERE edad > @edadMinima;   -- Alejandro (Raimundo tiene 30, no es > 30)
+
+SET @edadMinima = 40;
+SELECT * FROM contactos WHERE edad > @edadMinima;   -- sin resultados

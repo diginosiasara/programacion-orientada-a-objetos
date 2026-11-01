@@ -1,0 +1,24 @@
+# PHP
+*.log
+*.cache
+composer.phar
+
+# Entorno local
+php/
+*.env
+.env.local
+
+# Sistema
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Base de datos
+*.sql.bak
+*.dump

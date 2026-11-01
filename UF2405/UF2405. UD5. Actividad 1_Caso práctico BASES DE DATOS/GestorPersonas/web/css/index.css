@@ -1,0 +1,119 @@
+/* ============================================
+   ESTILOS ESPECÍFICOS - index.jsp
+   ============================================ */
+
+/* Tarjetas de opciones */
+.opciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.opcion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.opcion:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+.opcion .icono {
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+/* Sección de búsqueda */
+.seccion-busqueda {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.seccion-busqueda form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.seccion-busqueda .campo {
+    flex: 1;
+    min-width: 150px;
+}
+
+.seccion-busqueda input[type="text"] {
+    margin-bottom: 0;
+}
+
+/* Sección de agregar */
+.seccion-agregar {
+    background: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.seccion-agregar form {
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.seccion-agregar .fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Banner superior */
+.banner {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.banner h1 {
+    color: white;
+    border: none;
+    margin-bottom: 5px;
+}
+
+.banner p {
+    color: #ecf0f1;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .seccion-agregar .fila {
+        grid-template-columns: 1fr;
+    }
+    
+    .seccion-busqueda form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,0 +1,118 @@
+# Memoria Técnica del Proyecto
+## Arquitectura Multicapa J2EE
+
+### 1. Objetivos del Proyecto
+
+El objetivo principal era desarrollar una aplicación web multicapa siguiendo el 
+patrón MVC (Modelo-Vista-Controlador) utilizando tecnologías J2EE, cumpliendo 
+con los requisitos de la UF2405 sin instalar permanentemente ningún software en 
+el sistema operativo anfitrión.
+
+**Objetivos específicos:**
+- Implementar arquitectura de 3 capas (Presentación, Negocio, Datos)
+- Utilizar Servlets como controladores
+- Aplicar patrón MVC
+- Mantener el sistema operativo limpio (sin instalaciones permanentes)
+- Automatizar el despliegue mediante scripts
+
+### 2. Arquitectura Final Implementada
+┌─────────────────────────────────────────────────────────┐
+│ CAPA DE PRESENTACIÓN │
+│ ┌─────────────┐ ┌─────────────────────────────────┐ │
+│ │ index.html │ │ UsuarioServlet (Controlador) │ │
+│ │ estilos.css│ │ - Recibe petición HTTP │ │
+│ └─────────────┘ │ - Llama al Service │ │
+│ │ - Genera respuesta HTML │ │
+│ └─────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+│
+▼
+┌─────────────────────────────────────────────────────────┐
+│ CAPA DE NEGOCIO │
+│ ┌─────────────────────────────────────────────────┐ │
+│ │ UsuarioService (Lógica de Negocio) │ │
+│ │ - Valida datos │ │
+│ │ - Aplica reglas de negocio │ │
+│ │ - Orquesta llamadas al DAO │ │
+│ └─────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+│
+▼
+┌─────────────────────────────────────────────────────────┐
+│ CAPA DE DATOS │
+│ ┌─────────────────────────────────────────────────┐ │
+│ │ UsuarioDAO (Acceso a Datos) │ │
+│ │ - Conecta con H2 Database (JDBC) │ │
+│ │ - Ejecuta consultas SQL │ │
+│ │ - Mapea ResultSet a objetos Java │ │
+│ └─────────────────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────────────────┐ │
+│ │ Usuario (Modelo/JavaBean) │ │
+│ │ - id, nombre, email │ │
+│ └───────────────────────────────────────────────── │
+└─────────────────────────────────────────────────────────┘
+### 3. Estructura de Carpetas (Estándar Maven)
+proyecto-web-multicapa/
+├── pom.xml # Configuración Maven
+├── lanzar_proyecto.bat # Script de lanzamiento
+├── instalar_maven_local.bat # Script de instalación local
+├── abrir_terminal.bat # Script de terminal
+├── src/
+│ └── main/
+│ ├── java/
+│ │ └── com/empresa/proyecto/
+│ │ ├── model/
+│ │ │ └── Usuario.java
+│ │ ├── dao/
+│ │ │ └── UsuarioDAO.java
+│ │ ├── service/
+│ │ │ └── UsuarioService.java
+│ │ └── web/
+│ │ └── UsuarioServlet.java
+│ └── webapp/
+│ ├── WEB-INF/
+│ │ ── web.xml
+│ ├── css/
+│ │ └── estilos.css
+│ └── index.html
+├── tools/
+│ └── apache-maven-3.9.6/ # Maven local (no afecta al SO)
+└── target/ # Generado por Maven
+├── classes/
+└── tomcat/
+
+### 4. Tecnologías Utilizadas
+
+| Tecnología | Versión | Función |
+|------------|---------|---------|
+| Java JDK | 25.0.4.1 | Lenguaje de programación |
+| Apache Maven | 3.9.6 | Gestión de dependencias y build |
+| Tomcat Embebido | 7.0.47 | Servidor de aplicaciones |
+| H2 Database | 2.2.224 | Base de datos en memoria |
+| Servlet API | 3.1.0 | API de servlets Java EE |
+
+### 5. Decisiones de Diseño
+
+#### 5.1. Elección de H2 Database en lugar de MySQL
+**Razón:** Para cumplir el requisito de no instalar nada en el sistema operativo, 
+se optó por H2, una base de datos embebida en memoria que no requiere instalación 
+ni configuración externa.
+
+#### 5.2. Maven Local en carpeta `tools/`
+**Razón:** Evitar modificar el PATH del sistema operativo. Maven se descarga y 
+ejecuta exclusivamente dentro del proyecto.
+
+#### 5.3. Tomcat Embebido vía Plugin Maven
+**Razón:** No instalar Tomcat como servicio del sistema. El servidor se levanta 
+y se detiene con el script, sin dejar rastro.
+
+### 6. Flujo de Ejecución
+
+1. El usuario ejecuta `lanzar_proyecto.bat`
+2. El script detecta Java en el sistema
+3. El script configura Maven local desde `tools/`
+4. Maven descarga dependencias (primera vez)
+5. Maven compila el código Java
+6. Tomcat Embebido se inicia en el puerto 8080
+7. El usuario accede vía `http://localhost:8080/proyecto`
+8. Al cerrar la consola, todo se detiene limpiamente

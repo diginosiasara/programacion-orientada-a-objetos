@@ -1,0 +1,47 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+}
+h2 { text-align: center; color: #667eea; margin-top: 0; }
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+input[type="text"], input[type="password"] {
+    width: 100%; padding: 12px; border: 2px solid #e0e0e0;
+    border-radius: 6px; box-sizing: border-box; font-size: 15px;
+}
+input:focus { outline: none; border-color: #667eea; }
+button, .btn {
+    width: 100%; padding: 14px; background: #667eea; color: white;
+    border: none; border-radius: 6px; cursor: pointer; font-size: 16px;
+    font-weight: 600; text-align: center; text-decoration: none; display: block;
+    box-sizing: border-box;
+}
+button:hover, .btn:hover { background: #5a6fd1; }
+.error-msg {
+    background-color: #ffebee; color: #c62828; padding: 10px;
+    border-radius: 5px; margin-bottom: 15px; text-align: center; display: none;
+}
+.info-box {
+    margin-top: 20px; padding: 15px; background-color: #f8f9fa;
+    border-radius: 8px; border-left: 4px solid #667eea; font-size: 13px;
+}
+.user-info { background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+.rol-badge {
+    display: inline-block; padding: 4px 12px; background-color: #667eea;
+    color: white; border-radius: 12px; font-size: 12px; font-weight: 600;
+}
